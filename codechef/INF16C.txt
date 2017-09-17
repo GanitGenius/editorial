@@ -1,0 +1,97 @@
+#PROBLEM LINK:
+[Practice](https://www.codechef.com/problems/INF16C) 
+
+[Contest](https://www.codechef.com/INF16MOS/problems/INF16C)
+
+**Author:** [Full name][4444] 
+
+**Tester:** [Full name][5555] 
+
+**Editorialist:** [Abhishek Kumar](https://www.codechef.com/users/abhi1shek1)
+
+#DIFFICULTY:
+MEDIUM 
+
+#PREREQUISITES:
+Dot Product, [Simplex](https://en.wikipedia.org/wiki/Simplex)
+
+#PROBLEM:
+Given N dimensional space, place N + 1 point on it at a distance of 1 unit from origin in such a way that maximizes the minimum distance between any pair of points.
+
+#QUICK EXPLANATION:
+To maximize the min distance they should be aligned symmetrically and angle between each pair of points to center should be same and equal to $\arccos(\frac{-1}{N})$.
+
+#EXPLANATION:
+Given arrangement will form a k-Simplex which contains k + 1 points in k dimensional space. to maximize the minimum distance, points should be aligned symmetrically which means distance between each pair of points should be same. So any two lines connecting points to center should subtend an angle of $\arccos(\frac{-1}{N})$ at the center, a proof is given at bottom. Let's compute the co-ordinates:
+
+Out of many arrangements possible we can choose first point at any position and place other points relatively, for simplicity we choose it as (1, 0, 0, ..... , 0) which has distance of 1 unit from origin.
+Now, we want to place all other points at a certain angle from this one, we will take example of 4D plane.
+
+$
+\begin{pmatrix}
+w\\x\\y\\z
+\end{pmatrix},
+
+v1 = \begin{pmatrix}
+1\\0\\0\\0
+\end{pmatrix},
+
+v2 = \begin{pmatrix}
+\frac{-1}{4} \\ 0.9682 \\ 0 \\ 0
+\end{pmatrix},
+
+v3 = \begin{pmatrix}
+\frac{-1}{4} \\ x_3 \\ y_3 \\ z_3
+\end{pmatrix},
+
+v4 = \begin{pmatrix}
+\frac{-1}{4} \\ x_4 \\ y_4 \\ z_4
+\end{pmatrix},
+
+v5 = \begin{pmatrix}
+\frac{-1}{4} \\ x_5 \\ y_5 \\ z_5
+\end{pmatrix}
+$
+
+Now v1 is fixed, all other points paired with v1 should satisfy two conditions:
+
+ 1. subtend $\arccos(\frac{-1}{4})$ angle at center.
+ 2. distance of $vi$ from origin should be 1.
+
+Taking dot product of $v1$ with other points (consider points as vectors) fixes their first co-ordinate.
+
+$ v1 . vi = |v1| * |vi| * \cos(\arccos({\frac{-1}{4}})) = 1 * 1 * \frac{-1}{4}$ => $w_i = \frac{-1}{4}$ , $ i > 1 $
+
+Now $v2$ has three co-ordinates to be determined $ x_2, y_2 $ and $ z_2 $, we can set them to any values until the point $v2$ is at unit distance from center. Same as before, for simplicity we make $ y_2, z_2 = 0 $ which fixes $x_2$.
+
+$ (\frac{-1}{4})^2 + x_2^2 + 0^2 + 0^2 = 1^2 $ => $x_2 = 0.9682$
+
+In a similar way, we progressively determine other points.
+
+This is easy to compute now, look at the code to see my implementation.
+
+
+
+
+###Finding angle:
+
+
+To find angle for n dimensional simplex which contains n + 1 points, consider n + 1 unit vectors $u_1(1, 0, 0, ... , 0)$, $u_2(0, 1, 0, ... , 0),$ ... , $u_n(0, 0, ... , 1)$ in n + 1 dimension, distance between each pair of them is same and these unit vectors can be contained in a n-dimensional [hyperplane](https://en.wikipedia.org/wiki/Hyperplane) w + x + ... + y + z = 1. it's center(c) can be found easily as it's regular.
+
+$c = \frac{1}{n + 1}(u_1 + u_2 + ... + u_{n + 1})$   =>   $c = \frac{1}{n + 1}(1,1,1,...,1)$
+
+choose 2 points v1 and v2 and find the angle between lines joining these points to center(c).
+let v1 = (1, 0, 0, ... , 0), v2 = (0, 1, 0, ... , 0)
+
+v1 - c = $\frac{1}{n + 1}(n, -1, -1, ... , -1)$, v2 - c = $\frac{1}{n + 1}(-1, n, -1, ... , -1)$
+
+taking their dot product gives: $\cos\alpha = \frac{ -1 }{ n }$
+
+more details can be found [here](https://math.stackexchange.com/questions/555278/assume-that-there-are-n1-vectors-of-dimension-n-and-all-angles-of-any-two-v).
+
+#AUTHOR'S AND TESTER'S SOLUTIONS:
+Author's solution can be found [here][333]. 
+
+Tester's solution can be found [here][444]. 
+
+Editorialist's solution can be found [here](https://www.codechef.com/viewsolution/15413645). 
